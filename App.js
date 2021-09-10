@@ -27,81 +27,97 @@ const App = () => {
       id: 0,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeUno',
     },
     {
       id: 1,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeUno',
     },
     {
       id: 2,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeDos',
     },
     {
       id: 3,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeDos',
     },
     {
       id: 4,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeTres',
     },
     {
       id: 5,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeTres',
     },
     {
       id: 6,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeCuatro',
     },
     {
       id: 7,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeCuatro',
     },
     {
       id: 8,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeCinco',
     },
     {
       id: 9,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeCinco',
     },
     {
       id: 10,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeSeis',
     },
     {
       id: 11,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeSeis',
     },
     {
       id: 12,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeSiete',
     },
     {
       id: 13,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeSiete',
     },
     {
       id: 14,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeOcho',
     },
     {
       id: 15,
       url: 'https://reactnative.dev/img/tiny_logo.png',
       nombre: 'elementoUno',
+      value: 'personajeOcho',
     },
   ];
 
@@ -110,17 +126,16 @@ const App = () => {
   const [puntaje, setPuntaje] = useState(0);
 
   function Tarjeta({uri, onPress, estaActivo}) {
-    console.log({estaActivo});
 
     return (
       <TouchableOpacity style={styles.containerTarjeta} onPress={onPress}>
         {estaActivo === true ? (
-           <Image
-           style={styles.tarjetas}
-           source={{
-             uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9srttB_BxaSh8klXEoggeUV1rP4bNwMNVWD8Ql124DvTH0aJebAGxHFLxxMMLrzHb94k&usqp=CAU',
-           }}
-         />
+          <Image
+            style={styles.tarjetas}
+            source={{
+              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9srttB_BxaSh8klXEoggeUV1rP4bNwMNVWD8Ql124DvTH0aJebAGxHFLxxMMLrzHb94k&usqp=CAU',
+            }}
+          />
         ) : (
           <Image
             style={styles.tarjetas}
@@ -135,7 +150,14 @@ const App = () => {
 
   function vaidarSeleccionados(opcUno, opcDos) {
     console.log('vaidarSeleccionados', opcUno, opcDos);
-    if (opcionUno !== opcionDos) {
+
+    const resultado = Elementos.filter(item => {
+      if (item.id === opcUno || item.id === opcDos) {
+        return item;
+      }
+    });
+
+    if (resultado[0]?.value !== resultado[1]?.value) {
       setTimeout(() => {
         setOpcionUno(null);
         setOpcionDos(null);
@@ -146,7 +168,7 @@ const App = () => {
     setPuntaje(puntaje + 1);
   }
 
-  async function manejarSeleccion(elementoSeleccionado) {
+  function manejarSeleccion(elementoSeleccionado) {
     if (opcionUno === null) {
       console.log('vamos a guardar', elementoSeleccionado.id);
       setOpcionUno(elementoSeleccionado.id);
