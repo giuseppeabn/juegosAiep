@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,19 +7,10 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
-// [ items ] => {id, url, nombre}
-/*
-Elelemtos => Array => []
-const elementos = [1, 'asdasd', {}, []]
-item => {id, url,nombre}
-const respuesta = Elementos.map(item => item)
-
-setTimeout => funcion, tiempo
-*/
 
 const height = Dimensions.get('window').height;
-const width = Dimensions.get('window').width;
 
 const App = () => {
   const Elementos = [
@@ -124,9 +115,18 @@ const App = () => {
   const [opcionUno, setOpcionUno] = useState(null);
   const [opcionDos, setOpcionDos] = useState(null);
   const [puntaje, setPuntaje] = useState(0);
+  const [resueltos, setResueltos] = useState([]);
+
+  useEffect(() => {
+    if (puntaje === 8) {
+      Alert.alert('Felicitaciones!!!! Eres un crack');
+      setTimeout(() => {
+        reiniciarJuego();
+      }, 3000);
+    }
+  }, [puntaje]);
 
   function Tarjeta({uri, onPress, estaActivo}) {
-
     return (
       <TouchableOpacity style={styles.containerTarjeta} onPress={onPress}>
         {estaActivo === true ? (
@@ -149,8 +149,6 @@ const App = () => {
   }
 
   function vaidarSeleccionados(opcUno, opcDos) {
-    console.log('vaidarSeleccionados', opcUno, opcDos);
-
     const resultado = Elementos.filter(item => {
       if (item.id === opcUno || item.id === opcDos) {
         return item;
@@ -164,30 +162,34 @@ const App = () => {
       }, 1000);
       return;
     }
-    console.log('Coincidencia!!!');
     setPuntaje(puntaje + 1);
+    setResueltos([...resueltos, ...resultado]);
   }
 
   function manejarSeleccion(elementoSeleccionado) {
     if (opcionUno === null) {
-      console.log('vamos a guardar', elementoSeleccionado.id);
       setOpcionUno(elementoSeleccionado.id);
     } else if (opcionDos === null) {
-      console.log('opcionDosEsNull');
       setOpcionDos(elementoSeleccionado.id);
       vaidarSeleccionados(opcionUno, elementoSeleccionado.id);
     } else {
-      console.log('Terminado');
+      setOpcionUno(elementoSeleccionado.id);
+      setOpcionDos(null);
     }
   }
 
   function estaActivo(id) {
+    const activos = resueltos.filter(e => e.id === id);
+    if (activos && activos?.length > 0) {
+      return true;
+    }
     return id === opcionUno || id === opcionDos;
   }
 
   function reiniciarJuego() {
     setOpcionUno(null);
     setOpcionDos(null);
+    setResueltos([]);
     setPuntaje(0);
   }
 
